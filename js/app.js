@@ -27,7 +27,7 @@ const dom = {
 
   // Viewer
   viewer         : () => document.getElementById('viewer'),
-  viewerFavicon  : () => document.getElementById('viewerFavicon'),
+  viewerFavicon  : () => document.querySelector('.viewer-favicon'),
   viewerName     : () => document.getElementById('viewerName'),
   viewerIframe   : () => document.getElementById('viewerIframe'),
   viewerLoader   : () => document.getElementById('viewerLoader'),
@@ -226,17 +226,48 @@ function showViewer(project) {
   }
   dom.viewer().classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Lock orientation to match current system lock state
+  lockOrientationToSystem();
 }
 
 function hideViewer() {
   dom.viewer().classList.remove('active');
   document.body.style.overflow = '';
 
+  // Release orientation lock when exiting viewer
+  unlockOrientation();
+
   // Clear iframe after transition
   setTimeout(() => {
     dom.viewerIframe().src = '';
     state.activeProject = null;
   }, 300);
+}
+
+/**
+ * Lock screen orientation to whatever the system/user currently has.
+ * If the system is already locked (e.g. portrait-primary), we lock to
+ * that same type so rotation is disabled inside the viewer.
+ * If the system is NOT locked, we also leave it unlocked (natural).
+ */
+async function lockOrientationToSystem() {
+  if (!screen.orientation || typeof screen.orientation.lock !== 'function') return;
+  try {
+    const currentType = screen.orientation.type; // e.g. "portrait-primary"
+    await screen.orientation.lock(currentType);
+  } catch (err) {
+    // Browser may disallow locking (e.g. desktop) — silently ignore
+  }
+}
+
+function unlockOrientation() {
+  if (!screen.orientation || typeof screen.orientation.unlock !== 'function') return;
+  try {
+    screen.orientation.unlock();
+  } catch (err) {
+    // Silently ignore
+  }
 }
 
 function showViewerOffline() {
@@ -410,4 +441,4 @@ function bindInstall() {
       notice.innerHTML      = '<i class="fa-solid fa-circle-check"></i> Ditz App berhasil diinstal!';
     }
   });
-} 
+}

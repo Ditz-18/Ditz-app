@@ -116,6 +116,42 @@ async function loadProjects() {
 }
 
 /* ================================================================
+   FAVICON HELPER
+   ================================================================ */
+
+/**
+ * Returns favicon URL with multi-source fallback chain:
+ * 1. gstatic faviconV2 (lebih reliable dari google s2)
+ * 2. DuckDuckGo favicon service
+ * 3. Fallback ke initials di HTML (via onerror)
+ */
+function getFaviconUrl(domain, size = 64) {
+  return `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=${size}`;
+}
+
+function getDDGFaviconUrl(domain) {
+  return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+}
+
+/**
+ * Pasang favicon ke <img> dengan fallback otomatis:
+ * gstatic → DuckDuckGo → initials
+ */
+function setFaviconWithFallback(imgEl, domain, fallbackEl = null) {
+  imgEl.src = getFaviconUrl(domain);
+
+  imgEl.onerror = () => {
+    // Coba DuckDuckGo dulu
+    imgEl.onerror = () => {
+      // Semua gagal — tampilkan initials
+      imgEl.style.display = 'none';
+      if (fallbackEl) fallbackEl.style.display = 'flex';
+    };
+    imgEl.src = getDDGFaviconUrl(domain);
+  };
+}
+
+/* ================================================================
    RENDER PROJECT GRID
    ================================================================ */
 function renderProjectGrid() {
@@ -125,8 +161,7 @@ function renderProjectGrid() {
   grid.innerHTML = '';
 
   state.projects.forEach(project => {
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${project.domain}&sz=64`;
-    const initials   = project.name.substring(0, 2).toUpperCase();
+    const initials = project.name.substring(0, 2).toUpperCase();
 
     const card = document.createElement('div');
     card.className = 'project-card';
@@ -136,18 +171,11 @@ function renderProjectGrid() {
     card.innerHTML = `
       <div class="card-top">
         <div class="card-favicon">
-          <img
-            src="${faviconUrl}"
-            alt="${project.name}"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          />
+          <img alt="${project.name}" data-domain="${project.domain}" />
           <span class="card-favicon-fallback" style="display:none">${initials}</span>
         </div>
         <div class="card-arrow">
-          <svg viewBox="0 0 24 24">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
+          <i class="fa-solid fa-arrow-right"></i>
         </div>
       </div>
       <div class="card-name">${project.name}</div>
@@ -155,8 +183,14 @@ function renderProjectGrid() {
       <div class="card-domain">${project.domain}</div>
     `;
 
+    // Pasang favicon dengan fallback chain setelah card masuk DOM
     card.addEventListener('click', () => openProject(project));
     grid.appendChild(card);
+
+    // Set favicon setelah element ada di DOM
+    const imgEl      = card.querySelector('.card-favicon img');
+    const fallbackEl = card.querySelector('.card-favicon-fallback');
+    setFaviconWithFallback(imgEl, project.domain, fallbackEl);
   });
 }
 
@@ -199,8 +233,8 @@ function openProject(project) {
   state.activeProject = project;
 
   // Set viewer bar info
-  const faviconUrl = `https://www.google.com/s2/favicons?domain=${project.domain}&sz=32`;
-  dom.viewerFavicon().querySelector('img').src = faviconUrl;
+  const viewerImg = dom.viewerFavicon().querySelector('img');
+  setFaviconWithFallback(viewerImg, project.domain);
   dom.viewerName().textContent = project.name;
 
   // Show loader, hide offline state
@@ -220,8 +254,8 @@ function openProject(project) {
 
 function showViewer(project) {
   if (project && dom.viewerName()) {
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${project.domain}&sz=32`;
-    dom.viewerFavicon().querySelector('img').src = faviconUrl;
+    const viewerImg = dom.viewerFavicon().querySelector('img');
+    setFaviconWithFallback(viewerImg, project.domain);
     dom.viewerName().textContent = project.name;
   }
   dom.viewer().classList.add('active');

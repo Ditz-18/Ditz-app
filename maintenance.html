@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Segera Hadir — Ditz App</title>
+  <meta name="description" content="Halaman ini sedang dalam pemeliharaan" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+    :root {
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --t: 0.28s;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+    }
+
+    [data-theme="dark"] {
+      --bg:       #0a0a0f;
+      --surface:  #13131b;
+      --surface2: #1b1b26;
+      --border:   rgba(255,255,255,0.06);
+      --border2:  rgba(255,255,255,0.11);
+      --text:     #eeeef8;
+      --text2:    #9494ae;
+      --text3:    #52526a;
+      --accent:   #7b6cf6;
+      --accent2:  #a99df9;
+      --accent-glow: rgba(123,108,246,0.22);
+      --warn:     #ffb74d;
+      --warn-bg:  rgba(255,183,77,0.10);
+      --warn-border: rgba(255,183,77,0.22);
+    }
+
+    [data-theme="light"] {
+      --bg:       #f2f2f7;
+      --surface:  #ffffff;
+      --surface2: #f7f7fc;
+      --border:   rgba(0,0,0,0.07);
+      --border2:  rgba(0,0,0,0.13);
+      --text:     #0d0d1a;
+      --text2:    #58587a;
+      --text3:    #9898b8;
+      --accent:   #5b4de8;
+      --accent2:  #7b6cf6;
+      --accent-glow: rgba(91,77,232,0.14);
+      --warn:     #f57c00;
+      --warn-bg:  rgba(245,124,0,0.08);
+      --warn-border: rgba(245,124,0,0.20);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--t) var(--ease), color var(--t) var(--ease);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 32px 20px;
+    }
+
+    /* ── Icon ── */
+    .maint-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 24px;
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      animation: floatY 3s ease-in-out infinite;
+    }
+
+    .maint-icon i {
+      font-size: 32px;
+      color: var(--warn);
+    }
+
+    /* ── Texts ── */
+    .maint-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .maint-title span { color: var(--accent); }
+
+    .maint-desc {
+      font-size: 14.5px;
+      color: var(--text2);
+      text-align: center;
+      max-width: 360px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    /* ── Status pill ── */
+    .maint-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      color: var(--warn);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 40px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--warn);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    /* ── Card ── */
+    .maint-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      width: 100%;
+      max-width: 440px;
+      margin-bottom: 28px;
+    }
+
+    .maint-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 16px;
+    }
+
+    .maint-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .maint-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--text2);
+    }
+
+    .maint-list li i {
+      width: 18px;
+      text-align: center;
+      color: var(--accent2);
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.14s;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .back-btn:hover  { opacity: 0.87; }
+    .back-btn:active { transform: scale(0.97); }
+    .back-btn i      { font-size: 13px; }
+
+    /* ── Footer ── */
+    .maint-footer {
+      margin-top: 36px;
+      font-size: 12px;
+      color: var(--text3);
+      text-align: center;
+    }
+
+    .maint-footer span { color: var(--accent2); }
+
+    /* ── Animations ── */
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .maint-icon   { animation: floatY 3s ease-in-out infinite, fadeUp 0.4s var(--ease) both; animation-delay: 0s, 0s; }
+    .maint-title  { animation: fadeUp 0.4s var(--ease) 0.07s both; }
+    .maint-desc   { animation: fadeUp 0.4s var(--ease) 0.13s both; }
+    .maint-badge  { animation: fadeUp 0.4s var(--ease) 0.18s both; }
+    .maint-card   { animation: fadeUp 0.4s var(--ease) 0.24s both; }
+    .back-btn     { animation: fadeUp 0.4s var(--ease) 0.30s both; }
+    .maint-footer { animation: fadeUp 0.4s var(--ease) 0.36s both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .maint-card { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="maint-icon">
+    <i class="fa-solid fa-screwdriver-wrench"></i>
+  </div>
+
+  <h1 class="maint-title">Segera <span>Hadir</span></h1>
+
+  <p class="maint-desc">
+    Aplikasi native untuk platform ini masih dalam tahap pengembangan.
+    Kami sedang bekerja keras untuk menghadirkannya untukmu secepatnya.
+  </p>
+
+  <div class="maint-badge">
+    <div class="badge-dot"></div>
+    Sedang dalam pengembangan
+  </div>
+
+  <div class="maint-card">
+    <div class="maint-card-title">Yang sedang kami siapkan</div>
+    <ul class="maint-list">
+      <li>
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        Pengalaman native yang optimal di perangkatmu
+      </li>
+      <li>
+        <i class="fa-solid fa-bolt"></i>
+        Performa lebih cepat dibanding versi web
+      </li>
+      <li>
+        <i class="fa-solid fa-bell"></i>
+        Notifikasi push dan fitur offline penuh
+      </li>
+      <li>
+        <i class="fa-solid fa-shield-halved"></i>
+        Keamanan dan privasi yang ditingkatkan
+      </li>
+    </ul>
+  </div>
+
+  <a href="javascript:history.back()" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i>
+    Kembali
+  </a>
+
+  <p class="maint-footer">
+    &copy; 2026 <span>DITZNET TECHNOLOGY</span> &mdash; Ditz App
+  </p>
+
+  <script>
+    const saved = localStorage.getItem('ditz-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+
+</body>
+</html>

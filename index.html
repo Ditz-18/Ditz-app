@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ditz App</title>
+  <meta name="description" content="Hub terpusat semua project DITZNET TECHNOLOGY" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ditz App" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="apple-touch-icon" href="assets/icon.png" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ─── Global Offline Banner ─── -->
+  <div class="offline-banner" id="offlineBanner">
+    <i class="fa-solid fa-wifi" style="text-decoration:line-through"></i>
+    Tidak ada koneksi internet — project tidak dapat dimuat
+  </div>
+
+  <!-- ─── App Shell ─── -->
+  <div class="app-shell">
+
+    <!-- ══════════════════════════════
+         SIDEBAR (Desktop)
+    ══════════════════════════════ -->
+    <nav class="sidebar">
+
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <img
+          src="assets/logo.png"
+          alt="Ditz App Logo"
+          class="logo-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div class="logo-fallback">
+          <i class="fa-solid fa-grid-2"></i>
+        </div>
+        <div class="logo-wordmark">Ditz<span>App</span></div>
+      </div>
+
+      <!-- Nav Menu -->
+      <div class="nav-label">Menu</div>
+
+      <div class="nav-item active" data-page="home">
+        <div class="nav-icon"><i class="fa-solid fa-house"></i></div>
+        Beranda
+      </div>
+
+      <div class="nav-item" data-page="settings">
+        <div class="nav-icon"><i class="fa-solid fa-gear"></i></div>
+        Pengaturan
+      </div>
+
+      <div class="nav-item" data-page="about">
+        <div class="nav-icon"><i class="fa-solid fa-circle-info"></i></div>
+        Tentang
+      </div>
+
+      <!-- Footer Status -->
+      <div class="sidebar-footer">
+        <div class="conn-badge">
+          <div class="conn-dot" id="connDot"></div>
+          <span id="connStatus">Online</span>
+        </div>
+      </div>
+
+    </nav>
+    <!-- end sidebar -->
+
+    <!-- ══════════════════════════════
+         MAIN CONTENT
+    ══════════════════════════════ -->
+    <main class="main-content">
+
+      <!-- ─── HOME PAGE ─── -->
+      <div class="page home-page active" id="homePage">
+        <div class="page-header">
+          <div class="page-title"><i class="fa-solid fa-house-chimney"></i> Selamat Datang</div>
+          <div class="page-subtitle">Pilih project yang ingin kamu buka</div>
+        </div>
+        <div class="project-grid" id="projectGrid">
+          <!-- Cards rendered by JS -->
+        </div>
+      </div>
+
+      <!-- ─── SETTINGS PAGE ─── -->
+      <div class="page settings-page" id="settingsPage">
+        <div class="page-header">
+          <div class="page-title">Pengaturan</div>
+          <div class="page-subtitle">Sesuaikan tampilan Ditz App</div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-title">Tampilan</div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-info-label">Tema</div>
+              <div class="setting-info-desc">Pilih antara mode gelap atau terang</div>
+            </div>
+            <div class="theme-toggle">
+              <button class="theme-btn active" id="themeDark">
+                <i class="fa-solid fa-moon"></i>
+                Gelap
+              </button>
+              <button class="theme-btn" id="themeLight">
+                <i class="fa-solid fa-sun"></i>
+                Terang
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-title">Informasi Aplikasi</div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-info-label">Versi</div>
+              <div class="setting-info-desc">Versi Ditz App saat ini</div>
+            </div>
+            <span class="setting-value">1.0.0</span>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-info-label">Total Project</div>
+              <div class="setting-info-desc">Jumlah project yang tersedia</div>
+            </div>
+            <span class="setting-value" id="projectCount">5</span>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-info-label">Developer</div>
+              <div class="setting-info-desc">Dibuat oleh</div>
+            </div>
+            <span class="setting-value">DITZNET</span>
+          </div>
+        </div>
+
+        <!-- ─── Install & Download Card ─── -->
+        <div class="settings-card">
+          <div class="settings-card-title">Instalasi &amp; Unduhan</div>
+
+          <!-- Install PWA -->
+          <div class="setting-row install-row">
+            <div>
+              <div class="setting-info-label">Install Aplikasi</div>
+              <div class="setting-info-desc">Pasang Ditz App langsung di perangkatmu</div>
+            </div>
+            <button class="install-pwa-btn" id="installPwaBtn">
+              <i class="fa-solid fa-download"></i>
+              Install
+            </button>
+          </div>
+
+          <!-- Notice (not supported / already installed) -->
+          <div class="install-notice" id="installNotice" style="display:none"></div>
+
+          <div class="install-divider"></div>
+
+          <!-- Android Download -->
+          <div class="setting-row">
+            <div class="dl-platform-info">
+              <div class="dl-platform-icon dl-android">
+                <i class="fa-brands fa-android"></i>
+              </div>
+              <div>
+                <div class="setting-info-label">Android</div>
+                <div class="setting-info-desc">Unduh file APK untuk Android</div>
+              </div>
+            </div>
+            <a href="maintenance.html" class="dl-btn dl-btn-android" target="_blank" rel="noopener">
+              <i class="fa-solid fa-download"></i>
+              <span>Unduh</span>
+              <span class="dl-badge">Segera</span>
+            </a>
+          </div>
+
+          <!-- iOS Download -->
+          <div class="setting-row">
+            <div class="dl-platform-info">
+              <div class="dl-platform-icon dl-ios">
+                <i class="fa-brands fa-apple"></i>
+              </div>
+              <div>
+                <div class="setting-info-label">iOS / iPadOS</div>
+                <div class="setting-info-desc">Unduh aplikasi untuk iPhone &amp; iPad</div>
+              </div>
+            </div>
+            <a href="maintenance.html" class="dl-btn dl-btn-ios" target="_blank" rel="noopener">
+              <i class="fa-brands fa-apple"></i>
+              <span>Unduh</span>
+              <span class="dl-badge">Segera</span>
+            </a>
+          </div>
+
+        </div>
+        <!-- end install card -->
+
+      </div>
+      <!-- end settings page -->
+
+      <!-- ─── ABOUT PAGE ─── -->
+      <div class="page about-page" id="aboutPage">
+        <div class="page-header">
+          <div class="page-title">Tentang</div>
+          <div class="page-subtitle">Informasi aplikasi dan pengembang</div>
+        </div>
+
+        <!-- App Hero -->
+        <div class="about-hero">
+          <img
+            src="assets/logo.png"
+            alt="Ditz App"
+            class="about-logo-img"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="about-logo-fallback">
+            <i class="fa-solid fa-grid-2"></i>
+          </div>
+          <div>
+            <div class="about-app-name">Ditz<span>App</span></div>
+            <div class="about-version-tag">v1.0.0</div>
+          </div>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="about-card">
+          <div class="about-card-title">Deskripsi</div>
+          <p>
+            Ditz App adalah hub terpusat untuk semua project yang dikembangkan oleh DITZNET TECHNOLOGY.
+            Dirancang sebagai launcher personal yang memudahkan akses ke seluruh project tanpa perlu
+            berpindah-pindah tab browser.
+          </p>
+          <p>
+            Setiap project ditampilkan langsung di dalam aplikasi ini secara penuh, memberikan
+            pengalaman yang bersih dan terfokus layaknya sebuah PWA tersendiri.
+          </p>
+          <div class="copyright-text">
+            &copy; 2026 DITZNET TECHNOLOGY. Seluruh hak cipta dilindungi.
+          </div>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="portfolio-card">
+          <div class="portfolio-card-header">
+            <div class="portfolio-card-title">
+              <div class="portfolio-favicon">
+                <img
+                  src="https://www.google.com/s2/favicons?domain=bgsadityaa.netlify.app&sz=32"
+                  alt="Portfolio"
+                />
+              </div>
+              <span>Portofolio Developer</span>
+            </div>
+            <a
+              href="https://bgsadityaa.netlify.app"
+              target="_blank"
+              rel="noopener"
+              class="portfolio-open-btn"
+            >
+              Buka
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <div class="iframe-loader" id="portfolioLoader">
+              <div class="loader-ring"></div>
+            </div>
+            <iframe
+              id="portfolioIframe"
+              src="https://bgsadityaa.netlify.app"
+              title="Portofolio Developer"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+
+      </div>
+      <!-- end about page -->
+
+    </main>
+    <!-- end main content -->
+
+  </div>
+  <!-- end app shell -->
+
+  <!-- ══════════════════════════════
+       BOTTOM NAV (Mobile)
+  ══════════════════════════════ -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-item active" data-page="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Beranda</span>
+    </div>
+    <div class="bottom-nav-item" data-page="settings">
+      <i class="fa-solid fa-gear"></i>
+      <span>Pengaturan</span>
+    </div>
+    <div class="bottom-nav-item" data-page="about">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Tentang</span>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════
+       PROJECT VIEWER
+  ══════════════════════════════ -->
+  <div class="viewer" id="viewer">
+
+    <!-- Top Bar -->
+    <div class="viewer-bar">
+      <div class="viewer-favicon">
+        <img src="" alt="" />
+      </div>
+      <div class="viewer-name" id="viewerName">Project</div>
+      <button class="viewer-exit-btn" id="viewerExitBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Keluar
+      </button>
+    </div>
+
+    <!-- Iframe Area -->
+    <div class="viewer-iframe-wrap">
+
+      <!-- Loader -->
+      <div class="iframe-loader" id="viewerLoader">
+        <div class="loader-ring"></div>
+      </div>
+
+      <!-- Offline State -->
+      <div class="viewer-offline" id="viewerOffline">
+        <div class="offline-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="offline-title">Tidak Ada Koneksi</div>
+        <div class="offline-desc">
+          Pastikan perangkatmu terhubung ke internet, lalu coba lagi untuk membuka project ini.
+        </div>
+        <button class="offline-retry-btn" id="retryBtn">Coba Lagi</button>
+      </div>
+
+      <!-- Iframe -->
+      <iframe
+        id="viewerIframe"
+        src=""
+        title="Project Viewer"
+        allow="fullscreen"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+      ></iframe>
+
+    </div>
+  </div>
+  <!-- end viewer -->
+
+  <!-- ══════════════════════════════
+       EXIT CONFIRM MODAL
+  ══════════════════════════════ -->
+  <div class="modal-backdrop" id="exitModal">
+    <div class="modal-card">
+      <div class="modal-icon">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </div>
+      <div class="modal-title">Keluar dari Project?</div>
+      <div class="modal-desc">
+        Kamu akan meninggalkan <strong id="modalProjectName">project ini</strong> dan kembali ke beranda.
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="modalCancel">Batal</button>
+        <button class="modal-btn confirm" id="modalConfirm">Ya, Keluar</button>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+  <!-- Script -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

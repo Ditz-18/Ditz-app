@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ditz-money",
+    "name": "Ditz Money",
+    "description": "Aplikasi manajemen keuangan pribadi untuk mencatat pemasukan dan pengeluaran dengan mudah.",
+    "url": "https://ditzmoney.netlify.app",
+    "domain": "ditzmoney.netlify.app",
+    "color": "#4CAF50"
+  },
+  {
+    "id": "ngaji-yuk",
+    "name": "Ngaji Yuk",
+    "description": "Platform pembelajaran Al-Qur'an interaktif untuk memudahkan ibadah dan belajar mengaji.",
+    "url": "https://ngajiyuk-app.netlify.app",
+    "domain": "ngajiyuk-app.netlify.app",
+    "color": "#2196F3"
+  },
+  {
+    "id": "hantarin",
+    "name": "Hantarin",
+    "description": "Aplikasi pencatatan dan manajemen seserahan pernikahan, lengkap dengan tracking budget, status item, dan laporan ekspor.",
+    "url": "https://hantarin.netlify.app",
+    "domain": "hantarin.netlify.app",
+    "color": "#FF9800"
+  },
+  {
+    "id": "ditz-mail",
+    "name": "Ditz Mail",
+    "description": "Template email profesional yang elegan dan siap pakai untuk berbagai kebutuhan.",
+    "url": "https://ditzmailtemplate.netlify.app",
+    "domain": "ditzmailtemplate.netlify.app",
+    "color": "#9C27B0"
+  },
+  {
+    "id": "stok-req",
+    "name": "Stok Req",
+    "description": "Sistem manajemen stok dan permintaan barang untuk kebutuhan bisnis dan inventaris.",
+    "url": "https://stokreq.netlify.app",
+    "domain": "stokreq.netlify.app",
+    "color": "#F44336"
+  }
+]

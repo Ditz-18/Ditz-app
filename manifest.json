@@ -1,0 +1,22 @@
+{
+  "name": "Ditz App",
+  "short_name": "DitzApp",
+  "description": "Hub terpusat semua project DITZNET TECHNOLOGY",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
